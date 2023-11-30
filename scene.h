@@ -5,6 +5,7 @@
 
 t_canvas    canvas(int  width, int height);
 t_camera    camera(t_canvas *canvas, t_point3 origin);
-t_sphere 	sphere(t_point3 center, double radius);
+t_sphere 	*sphere(t_point3 center, double radius);
+t_object 	*object(int type, void *element);
 
 #endif

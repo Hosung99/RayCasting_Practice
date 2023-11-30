@@ -9,9 +9,10 @@ void	set_face_normal(t_ray *ray, t_hit_record *rec) //구가 카메라를 둘러
 		rec->normal = vmult(rec->normal, -1);
 }
 
-double	hit_sphere(t_sphere *sp, t_ray *ray, t_hit_record *rec)
+double	hit_sphere(t_object *world, t_ray *ray, t_hit_record *rec)
 {
 	t_vec3 oc;
+	t_sphere *sp;
 
 	double a;
 	double half_b;
@@ -20,6 +21,7 @@ double	hit_sphere(t_sphere *sp, t_ray *ray, t_hit_record *rec)
 	double	sqrt_result;
 	double	root;
 
+	sp = world->element;
 	oc.x = ray->origin.x - sp->center.x;
 	oc.y = ray->origin.y - sp->center.y;
 	oc.z = ray->origin.z - sp->center.z;
@@ -44,4 +46,34 @@ double	hit_sphere(t_sphere *sp, t_ray *ray, t_hit_record *rec)
 	rec->normal.z = (rec->point.z - sp->center.z) / sp->radius1;
 	set_face_normal(ray, rec);
 	return (1);
+}
+
+int	hit(t_object *world, t_ray *ray, t_hit_record *rec)
+{
+	int			is_hit;
+	t_hit_record temp_rec;
+
+	temp_rec = *rec;
+	is_hit = 0;
+	while (world)
+	{
+		if (hit_obj(world,ray,&temp_rec))
+		{
+			is_hit = 1;
+			temp_rec.tmax = temp_rec.t; //ray가 object에 hit시 tmax를 히트한 t로 바꾸어 그 다음 오브젝트 검사시에 더 멀리 있는 오브젝트는 hit가 안되도록 설정
+			*rec = temp_rec;
+		}
+		world = world->next;
+	}
+	return (is_hit);
+}
+
+int	hit_obj(t_object *world, t_ray *ray, t_hit_record *rec)
+{
+	int	hit_result;
+
+	hit_result = 0;
+	if (world->object_type == SP)
+		hit_result = hit_sphere(world, ray, rec);
+	return (hit_result);
 }

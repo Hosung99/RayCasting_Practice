@@ -29,6 +29,7 @@ double      vdot(t_vec3 vec, t_vec3 vec2);
 t_vec3      vcross(t_vec3 vec, t_vec3 vec2);
 t_vec3      vunit(t_vec3 vec);
 t_vec3      vmin(t_vec3 vec1, t_vec3 vec2);
-double	hit_sphere(t_sphere *sp, t_ray *ray, t_hit_record *rec);
+t_object	*olast(t_object *list);
+void		oadd(t_object **list, t_object *new);
 
 #endif

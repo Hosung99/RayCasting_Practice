@@ -39,7 +39,7 @@ t_ray	ray_primary(t_camera *camera, double u, double v)
 	return (ray);
 }
 
-t_color3	ray_color(t_ray *r, t_sphere *sphere)
+t_color3	ray_color(t_ray *r, t_object *world)
 {
 	double t;
 	t_vec3 n;
@@ -50,8 +50,7 @@ t_color3	ray_color(t_ray *r, t_sphere *sphere)
 	rec.tmin = 0.0;
 	rec.tmax = INFINITY;
 	//ray의 방향벡터의 y 값을 기준으로 그라데이션을 주기 위한 계수.
-	t = hit_sphere(sphere, r, &rec);
-	if (t > 0.0)
+	if (hit(world,r,&rec))
 	{
 		cor.x = (rec.normal.x + 1) * 0.5;
 		cor.y = (rec.normal.y + 1) * 0.5;

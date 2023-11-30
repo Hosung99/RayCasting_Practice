@@ -3,6 +3,7 @@
 
 #define TRUE 1
 #define FALSE 0
+#define SP 1
 
 typedef struct s_vec3 t_vec3;
 typedef struct t_point3 t_point3;
