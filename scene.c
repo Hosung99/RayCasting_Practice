@@ -22,7 +22,17 @@ t_camera camera(t_canvas *canvas, t_point3 origin)
 	camera.horizontal = vec3(camera.viewport_w, 0, 0);
 	camera.vertical = vec3(0, camera.viewport_h, 0);
 	camera.left_top.x = camera.origin.x - camera.viewport_w / 2;
-	camera.left_top.y = camera.origin.y + camera.viewport_h / 2;
+	camera.left_top.y = camera.origin.y - camera.viewport_h / 2;
 	camera.left_top.z = camera.origin.z - camera.focal_len;
 	return (camera);
+}
+
+t_sphere sphere(t_point3 center, double radius)
+{
+	t_sphere sphere;
+
+	sphere.center = center;
+	sphere.radius1 = radius;
+	sphere.radius2 = radius * radius;
+	return (sphere);
 }

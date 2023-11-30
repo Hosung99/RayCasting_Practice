@@ -1,6 +1,8 @@
 #ifndef STRUCTURES_H
 # define STRUCTURES_H
 
+#define TRUE 1
+#define FALSE 0
 
 typedef struct s_vec3 t_vec3;
 typedef struct t_point3 t_point3;
@@ -8,7 +10,9 @@ typedef struct t_color3 t_color3;
 typedef	struct s_ray t_ray;
 typedef struct s_camera t_camera;
 typedef struct s_canvas t_canvas;
-
+typedef struct s_sphere t_sphere;
+typedef struct s_hit_record t_hit_record;
+typedef struct s_object t_object;
 struct s_canvas
 {
 	int width; //캔버스 높이
@@ -52,6 +56,30 @@ struct s_camera
 	t_vec3	vertical; //수직길이 벡터
 	double	focal_len; //초점거리
 	t_point3 left_top; //왼쪽위 코너점
+};
+
+struct s_sphere
+{
+	t_point3 center;
+	double	 radius1;
+	double	 radius2;
+};
+
+struct s_hit_record
+{
+	t_point3 point;
+	t_vec3 normal; //교점의 법선벡터
+	double t; //광선의 원점과 교점사이의 거리
+	double tmin; //카메라 뒷부분. t < 0
+	double tmax; //오브젝트가 카메라보다 너무 먼경우
+	int	front_face;
+};
+
+struct	s_object
+{
+	int				object_type;
+	void			*element;
+	void			*next;
 };
 
 #endif

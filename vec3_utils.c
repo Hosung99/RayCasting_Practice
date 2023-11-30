@@ -37,7 +37,7 @@ void        vset(t_vec3 *vec, double x, double y, double z)
     vec->z = z;
 }
 
-double      vlength2(t_vec3 vec)
+double      vlength2(t_vec3 vec) //벡터 크기의 제곱
 {
     return (vec.x * vec.x + vec.y * vec.y + vec.z * vec.z);
 }
@@ -153,7 +153,7 @@ t_vec3      vdivide(t_vec3 vec, double t)
     return vec;
 }
 
-double      vdot(t_vec3 vec, t_vec3 vec2)
+double      vdot(t_vec3 vec, t_vec3 vec2) //vec1 * vec2
 {
     return (vec.x * vec2.x + vec.y * vec2.y + vec.z * vec2.z);
 }
