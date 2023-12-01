@@ -182,6 +182,17 @@ t_vec3      vunit(t_vec3 vec)
     return (vec);
 }
 
+t_color3 color_min(t_color3 color1,  t_color3 color2)
+{
+    if (color1.x > color2.x)
+        color1.x = color2.x;
+    if (color1.y > color2.y)
+        color1.y = color2.y;
+    if (color1.z > color2.z)
+        color1.z = color2.z;
+    return (color1);
+}
+
 t_vec3  vmin(t_vec3 vec1, t_vec3 vec2)
 {
     if (vec1.x > vec2.x)

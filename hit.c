@@ -4,8 +4,8 @@
 
 void	set_face_normal(t_ray *ray, t_hit_record *rec) //구가 카메라를 둘러쌈을 고려.
 {
-	rec->front_face = vdot(ray->direction, rec->normal); //백터 내적
-	if (rec->front_face < 0) //벡터 내적이 0보다 작다면 법선벡터의 반대로 설정해준다.
+	rec->front_face = vdot(ray->direction, rec->normal) < 0; //백터 내적
+	if (!rec->front_face) //벡터 내적이 0보다 작다면 법선벡터의 반대로 설정해준다.
 		rec->normal = vmult(rec->normal, -1);
 }
 
@@ -45,6 +45,7 @@ double	hit_sphere(t_object *world, t_ray *ray, t_hit_record *rec)
 	rec->normal.y = (rec->point.y - sp->center.y) / sp->radius1;
 	rec->normal.z = (rec->point.z - sp->center.z) / sp->radius1;
 	set_face_normal(ray, rec);
+	rec->albedo = world->albedo;
 	return (1);
 }
 
@@ -57,7 +58,7 @@ int	hit(t_object *world, t_ray *ray, t_hit_record *rec)
 	is_hit = 0;
 	while (world)
 	{
-		if (hit_obj(world,ray,&temp_rec))
+		if (hit_obj(world, ray, &temp_rec))
 		{
 			is_hit = 1;
 			temp_rec.tmax = temp_rec.t; //ray가 object에 hit시 tmax를 히트한 t로 바꾸어 그 다음 오브젝트 검사시에 더 멀리 있는 오브젝트는 hit가 안되도록 설정
