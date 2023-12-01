@@ -38,6 +38,18 @@ t_ray	ray_primary(t_camera *camera, double u, double v)
 	return (ray);
 }
 
+int	in_shadow(t_object *obj, t_ray light_ray, double light_ren)
+{
+	t_hit_record rec;
+
+	rec.tmin = 0;
+	rec.tmax = light_ren;
+	if (hit(obj, &light_ray, &rec))
+		return (1);
+	else
+		return (0);
+}
+
 t_hit_record	record_init(void)
 {
 	t_hit_record record;
@@ -50,20 +62,37 @@ t_hit_record	record_init(void)
 t_color3	point_light_get(t_scene *scene, t_light *light)
 {
 	t_color3 diffuse;
+	t_color3 color_temp;
 	t_vec3 light_dir;
 	t_vec3 temp;
-	double kd; //diffuse 강도
+	t_point3 point_temp;
+	double	kd; //diffuse 강도
+	double	brightness;
+	double	light_len;
+	t_ray	light_ray;
 
 	temp.x = light->origin.x - scene->rec.point.x; //원점에서 광원까지의 벡터
 	temp.y = light->origin.y - scene->rec.point.y;
 	temp.z = light->origin.z - scene->rec.point.z;
+	light_len = vlength(temp);
+	point_temp.x = scene->rec.point.x + EPSILON * scene->rec.normal.x;
+	point_temp.y = scene->rec.point.y + EPSILON * scene->rec.normal.y;
+	point_temp.z = scene->rec.point.z + EPSILON * scene->rec.normal.z;
+	light_ray = ray(point_temp, temp);
+	if (in_shadow(scene->world, light_ray, light_len))
+		return (color3(0,0,0));
 	light_dir = vunit(temp); //교점에서 출발하여 광원을 향하는 벡터 (정규화한)
 	//cos세타가 90도일때 , 0이고 세타가 둔각일 시 음수가 되므로 0.0으로 초기화해준다.
 	kd = fmax(vdot(scene->rec.normal, light_dir), 0.0); //두 벡터의 내적
 	diffuse.x = light->light_color.x * kd;
 	diffuse.y = light->light_color.y * kd;
 	diffuse.z = light->light_color.z * kd;
-	return (diffuse);
+	brightness = light->bright_ratio * LUMEN;
+	color_temp = plus_color(scene->ambient, diffuse);
+	color_temp.x = color_temp.x * brightness;
+	color_temp.y = color_temp.y * brightness;
+	color_temp.z = color_temp.z * brightness;
+	return (color_temp);
 }
 
 t_color3	phong_lightning(t_scene *scene)

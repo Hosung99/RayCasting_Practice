@@ -7,6 +7,7 @@
 #define PL 2
 #define LIGHT_POINT 1
 #define EPSILON 1e-6
+#define LUMEN 2
 
 typedef struct s_vec3 t_vec3;
 typedef struct t_point3 t_point3;
