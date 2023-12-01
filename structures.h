@@ -8,6 +8,8 @@
 #define LIGHT_POINT 1
 #define EPSILON 1e-6
 #define LUMEN 2
+#define WIDTH 1920
+#define HEIGHT 1080
 
 typedef struct s_vec3 t_vec3;
 typedef struct t_point3 t_point3;
@@ -37,9 +39,9 @@ struct s_vec3
 
 struct t_color3
 {
-	double x;
-	double y;
-	double z;
+	double r;
+	double g;
+	double b;
 };
 
 struct t_point3
@@ -64,6 +66,7 @@ struct s_camera
 	t_vec3	vertical; //수직길이 벡터
 	double	focal_len; //초점거리
 	t_point3 left_top; //왼쪽위 코너점
+	double	fov; //수평시야범위
 };
 
 struct s_hit_record
@@ -112,7 +115,7 @@ struct s_sphere
 
 struct s_plane
 {
-	t_vec3		normal; //법선벡터
+	t_vec3		dir; //평면의 방향벡터
 	t_point3	point; //위치
 	t_color3    color; //RGB
 };

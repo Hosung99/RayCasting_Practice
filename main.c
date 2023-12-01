@@ -14,27 +14,26 @@ t_scene	*scene_init(void)
 	scene = (t_scene *)malloc(sizeof(t_scene));
 	if (!scene)
 		return (NULL); //exit하도록 수정
-	scene->canvas = canvas(400,300);
+	scene->canvas = canvas(WIDTH,HEIGHT);
 	scene->camera = camera(&scene->canvas, point3(0,0,0));
-    world = object(SP, sphere(point3(-2, 0, -5), 2), color3(0.5, 0, 0)); // world 에 구1 추가
-    oadd(&world, object(SP, sphere(point3(0, -1000, 0), 995), color3(1, 1, 1))); // world 에 구3 추가
-    oadd(&world, object(SP, sphere(point3(2, 0, -5), 2), color3(0, 0.5, 0))); // world 에 구2 추가
+    world = object(SP, sphere(point3(-2, -5, 5), 2), color3(0.5, 0, 0)); // world 에 구1 추가
+	oadd(&world, object(PL, plane(vec3(0.0,-1.0,0.0), point3(0.0,0.0,-100.0), color3(0,0,0.5)),color3(1,1,1)));
     scene->world = world;
     lights = object(LIGHT_POINT, light_point(point3(0, 20, 0), color3(1, 1, 1), 0.5), color3(0, 0, 0)); // 더미 albedo
 	scene->light = lights;
 	ka = 0.1;
-	scene->ambient.x = ka;
-	scene->ambient.y = ka;
-	scene->ambient.z = ka;
+	scene->ambient.r = ka;
+	scene->ambient.g = ka;
+	scene->ambient.b = ka;
 	return (scene);
 }
 
 
 void    write_color(t_color3 pixel_color)
 {
-    printf("%d %d %d\n", (int)(255.999 * pixel_color.x),
-                        (int)(255.999 * pixel_color.y),
-                        (int)(255.999 * pixel_color.z));
+    printf("%d %d %d\n", (int)(255.999 * pixel_color.r),
+                        (int)(255.999 * pixel_color.g),
+                        (int)(255.999 * pixel_color.b));
 }
 
 int	main(void)

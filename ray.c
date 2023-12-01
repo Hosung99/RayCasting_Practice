@@ -50,7 +50,7 @@ int	in_shadow(t_object *obj, t_ray light_ray, double light_ren)
 		return (0);
 }
 
-t_hit_record	record_init(void)
+t_hit_record		record_init(void)
 {
 	t_hit_record record;
 
@@ -84,14 +84,14 @@ t_color3	point_light_get(t_scene *scene, t_light *light)
 	light_dir = vunit(temp); //교점에서 출발하여 광원을 향하는 벡터 (정규화한)
 	//cos세타가 90도일때 , 0이고 세타가 둔각일 시 음수가 되므로 0.0으로 초기화해준다.
 	kd = fmax(vdot(scene->rec.normal, light_dir), 0.0); //두 벡터의 내적
-	diffuse.x = light->light_color.x * kd;
-	diffuse.y = light->light_color.y * kd;
-	diffuse.z = light->light_color.z * kd;
+	diffuse.r = light->light_color.r * kd;
+	diffuse.g = light->light_color.g * kd;
+	diffuse.b = light->light_color.b * kd;
 	brightness = light->bright_ratio * LUMEN;
 	color_temp = plus_color(scene->ambient, diffuse);
-	color_temp.x = color_temp.x * brightness;
-	color_temp.y = color_temp.y * brightness;
-	color_temp.z = color_temp.z * brightness;
+	color_temp.r = color_temp.r * brightness;
+	color_temp.g = color_temp.g * brightness;
+	color_temp.b = color_temp.b * brightness;
 	return (color_temp);
 }
 
@@ -110,9 +110,9 @@ t_color3	phong_lightning(t_scene *scene)
 		lights = lights->next;
 	}
 	light_color = plus_color(light_color, scene->ambient); //모든 광원에 의한 빛의 양을 구한 후
-	light_color.x = light_color.x * scene->rec.albedo.x; //object의 반사율과 곱한다.
-	light_color.y = light_color.y * scene->rec.albedo.y;
-	light_color.z = light_color.z * scene->rec.albedo.z;
+	light_color.r = light_color.r * scene->rec.albedo.r; //object의 반사율과 곱한다.
+	light_color.g = light_color.g * scene->rec.albedo.g;
+	light_color.b = light_color.b * scene->rec.albedo.b;
 	return (color_min(light_color, color3(1,1,1))); //만약 광원의 합이 1보다 크면 color(1,1,1)을 반환
 }
 

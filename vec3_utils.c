@@ -24,9 +24,9 @@ t_color3    color3(double r, double g, double b)
 {
     t_color3 color;
 
-    color.x = r;
-    color.y = g;
-    color.z = b;
+    color.r = r;
+    color.g = g;
+    color.b = b;
     return (color);
 }
 
@@ -65,9 +65,9 @@ t_point3      plus_point(t_point3 vec, t_point3 vec2)
 
 t_color3      plus_color(t_color3 vec, t_color3 vec2)
 {
-    vec.x += vec2.x;
-    vec.y += vec2.y;
-    vec.z += vec2.z;
+    vec.r += vec2.r;
+    vec.g += vec2.g;
+    vec.b += vec2.b;
     return (vec);
 }
 
@@ -137,9 +137,9 @@ t_point3 v_mult_point(t_point3 vec, double t)
 
 t_color3 v_mult_color(t_color3 vec, double t)
 {
-	vec.x *= t;
-	vec.y *= t;
-	vec.z *= t;
+	vec.r *= t;
+	vec.g *= t;
+	vec.b *= t;
 	return (vec);
 }
 
@@ -184,12 +184,12 @@ t_vec3      vunit(t_vec3 vec)
 
 t_color3 color_min(t_color3 color1,  t_color3 color2)
 {
-    if (color1.x > color2.x)
-        color1.x = color2.x;
-    if (color1.y > color2.y)
-        color1.y = color2.y;
-    if (color1.z > color2.z)
-        color1.z = color2.z;
+    if (color1.r > color2.r)
+        color1.r = color2.r;
+    if (color1.g > color2.g)
+        color1.g = color2.g;
+    if (color1.b > color2.b)
+        color1.b = color2.b;
     return (color1);
 }
 

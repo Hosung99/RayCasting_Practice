@@ -9,11 +9,36 @@ void	set_face_normal(t_ray *ray, t_hit_record *rec) //구가 카메라를 둘러
 		rec->normal = vmult(rec->normal, -1);
 }
 
+double	hit_plane(t_object *world, t_ray *ray, t_hit_record *rec)
+{
+	t_plane	*pl;
+	t_vec3	temp;
+	float	parent;
+	float	child;
+
+
+	pl = world->element;
+	parent = vdot(ray->direction, pl->dir);
+	if (parent < EPSILON)
+		return (0);
+	temp.x = rec->point.x -ray->origin.x;
+	temp.y = rec->point.y -ray->origin.y;
+	temp.z = rec->point.z -ray->origin.z;
+	child = vdot(temp, pl->dir);
+	if (child < 0)
+		return (0);
+	if (child / parent < rec->tmin || child / parent > rec->tmax)
+		return (0);
+	rec->t = child / parent;
+	rec->point = ray_at(ray, rec->t);
+	rec->normal = pl->dir;
+	return (1);
+}
+
 double	hit_sphere(t_object *world, t_ray *ray, t_hit_record *rec)
 {
 	t_vec3 oc;
 	t_sphere *sp;
-
 	double a;
 	double half_b;
 	double c;
@@ -29,7 +54,7 @@ double	hit_sphere(t_object *world, t_ray *ray, t_hit_record *rec)
 	half_b = vdot(oc, ray->direction);
 	c = vlength2(oc) - sp->radius2;
 	result = half_b * half_b - a * c; //짝수 근의공식
-	if (result < 0 )
+	if (result < 0)
 		return (0);
 	sqrt_result = sqrt(result); //루트 씌우기
 	root = (-half_b - sqrt_result) / a; //두 근 중 작은 근
@@ -76,5 +101,7 @@ int	hit_obj(t_object *world, t_ray *ray, t_hit_record *rec)
 	hit_result = 0;
 	if (world->object_type == SP)
 		hit_result = hit_sphere(world, ray, rec);
+	else if (world->object_type == PL)
+		hit_result = hit_plane(world, ray, rec);
 	return (hit_result);
 }
